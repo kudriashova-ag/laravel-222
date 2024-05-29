@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 
 class MainController extends Controller
 {
-    function index() {
+    function index()
+    {
         $title = 'Home page';
         $subtitle = '<em>Subtitle</em>';
         $users = ['Tom', 'Bob'];
@@ -14,11 +15,23 @@ class MainController extends Controller
         return view('client.index', compact('title', 'subtitle', 'users'));
     }
 
-    function contacts() {
+    function contacts()
+    {
         return view('client.contacts');
     }
 
-    function sendEmail() {
-        return 'email';
+    function sendEmail(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|min:3|max:25',
+            'email' => 'required|email',
+            'message' => 'required'
+        ]);
+
+        //dd($request->all());
+        // return redirect('/contacts');
+        // return redirect()->route('contacts');
+        // return to_route('contacts');
+        return back()->with('success', 'Thank!');
     }
 }

@@ -2,10 +2,30 @@
 
 @section('content')
     <h1>Contact Us</h1>
-    <form action="{{route('contacts.send')}}" method="post">
+
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    @if(session('success'))
+        <div class="alert alert-success">{{session('success')}}</div>
+    @endif
+
+
+    <form action="{{ route('contacts.send') }}" method="post">
+        @csrf
         <div class="mt-3">
             <label for="" class="form-label">Name:</label>
-            <input type="text" class="form-control" name="name">
+            <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{old('name')}}">
+            @error('name')
+                <div class="invalid-feedback">{{$message}}</div>
+            @enderror
         </div>
 
         <div class="mt-3">
