@@ -18,8 +18,9 @@
             @foreach ($genres as $genre)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
-                    <td>{{ $genre->name }}</td>
-                    <td>{{ $genre->description }}</td>
+                    <td>{{ $genre->name }} {{$genre->books_count}}</td>
+                    <td>{{ $genre->description }}
+                    </td>
                     <td>
                         <a href="{{ route('genres.edit', ['genre' => $genre->id]) }}" class="btn btn-warning">Edit</a>
 

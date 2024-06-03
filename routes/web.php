@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\BookController;
 use App\Http\Controllers\Admin\GenresController;
 use App\Http\Controllers\MainController;
 use App\Models\Genre;
@@ -21,6 +22,7 @@ Route::get('/contacts', [MainController::class, 'contacts'])->name('contacts');
 Route::post('/contacts', [MainController::class, 'sendEmail'])->name('contacts.send');
 
 Route::resource('/admin/genres', GenresController::class);
+Route::resource('/admin/books', BookController::class);
 
 
 
