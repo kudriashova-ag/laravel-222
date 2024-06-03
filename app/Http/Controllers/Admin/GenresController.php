@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Genre;
 use Illuminate\Http\Request;
 
 class GenresController extends Controller
@@ -12,7 +13,8 @@ class GenresController extends Controller
      */
     public function index()
     {
-        return 'Genres';
+        $genres = Genre::all();
+        return view('admin.genres.index', compact('genres'));
     }
 
     /**
@@ -20,7 +22,7 @@ class GenresController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.genres.create');
     }
 
     /**
@@ -28,7 +30,18 @@ class GenresController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required'
+        ]);
+
+        /* $genre = new Genre();
+        $genre->name = $request->name;
+        $genre->description = $request->description;
+        $genre->save(); */
+
+        Genre::create($request->all());
+        return to_route('genres.index');
+
     }
 
     /**
@@ -42,24 +55,34 @@ class GenresController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Genre $genre)
     {
-        //
+        return view('admin.genres.edit', compact('genre'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Genre $genre)
     {
-        //
+        $request->validate([
+            'name' => 'required'
+        ]);
+
+        // $genre->name = $request->name;
+        // $genre->description = $request->description;
+        // $genre->save();
+
+        $genre->update($request->all());
+        return to_route('genres.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Genre $genre)
     {
-        //
+        $genre->delete();
+        return to_route('genres.index');
     }
 }
