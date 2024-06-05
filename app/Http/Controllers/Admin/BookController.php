@@ -37,7 +37,13 @@ class BookController extends Controller
             'genre_id' => 'exists:genres,id'
         ]);
 
-        Book::create($request->all());
+        $book = Book::create($request->all());
+        if ($request->image) {
+            $path = $request->image->store('test');
+            $book->image = 'storage/' . $path;
+            $book->save();
+        }
+
         return to_route('books.index');
     }
 

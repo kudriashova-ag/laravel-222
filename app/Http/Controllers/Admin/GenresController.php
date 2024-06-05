@@ -38,6 +38,8 @@ class GenresController extends Controller
         $genre->name = $request->name;
         $genre->description = $request->description;
         $genre->save(); */
+        
+
 
         Genre::create($request->all());
         return to_route('genres.index');
