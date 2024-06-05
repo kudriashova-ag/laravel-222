@@ -11,6 +11,8 @@ class Book extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['name', 'description', 'genre_id'];
+
     function genre() {
         return $this->belongsTo(Genre::class);
     }
@@ -20,6 +22,13 @@ class Book extends Model
     {
         return Attribute::make(
             get: fn (mixed $value, array $attributes) => Str::words($attributes['description'], 4, '...'),
+        );
+    }
+
+    protected function image(): Attribute
+    {
+        return Attribute::make(
+            get: fn (mixed $value) => $value ? $value : 'https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg',
         );
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Book;
+use App\Models\Genre;
 use Illuminate\Http\Request;
 
 class BookController extends Controller
@@ -13,8 +14,7 @@ class BookController extends Controller
      */
     public function index()
     {
-        $books = Book::with('genre')->get();
-
+        $books = Book::with('genre')->latest()->paginate(5);
         return view('admin.books.index', compact('books'));
     }
 
@@ -23,7 +23,8 @@ class BookController extends Controller
      */
     public function create()
     {
-        //
+        $genres = Genre::all()->pluck('name', 'id');
+        return view('admin.books.create', compact('genres'));
     }
 
     /**
@@ -31,7 +32,13 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|unique:books,name',
+            'genre_id' => 'exists:genres,id'
+        ]);
+
+        Book::create($request->all());
+        return to_route('books.index');
     }
 
     /**
