@@ -17,6 +17,11 @@ class Book extends Model
         return $this->belongsTo(Genre::class);
     }
 
+    function books() {
+        return $this->belongsToMany(self::class, 'book_book', 'book_id', 'recommended_id');
+    }
+
+
 
     protected function shortDescription(): Attribute
     {

@@ -21,6 +21,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [MainController::class, 'index'])->name('home');
 Route::get('/contacts', [MainController::class, 'contacts'])->name('contacts');
 Route::post('/contacts', [MainController::class, 'sendEmail'])->name('contacts.send');
+Route::get('/book/{book}', [MainController::class, 'book'])->name('book');
+Route::get('/genre/{genre:slug}', [MainController::class, 'genre'])->name('genre');
 
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {

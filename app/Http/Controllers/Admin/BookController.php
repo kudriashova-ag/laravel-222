@@ -24,7 +24,9 @@ class BookController extends Controller
     public function create()
     {
         $genres = Genre::all()->pluck('name', 'id');
-        return view('admin.books.create', compact('genres'));
+        $books = Book::orderBy('name')->get()->pluck('name', 'id');
+
+        return view('admin.books.create', compact('genres', 'books'));
     }
 
     /**
@@ -43,6 +45,7 @@ class BookController extends Controller
             $book->image = 'storage/' . $path;
             $book->save();
         }
+        $book->books()->sync($request->books);
 
         return to_route('books.index');
     }
@@ -60,7 +63,10 @@ class BookController extends Controller
      */
     public function edit(Book $book)
     {
-        //
+        $genres = Genre::all()->pluck('name', 'id');
+        $books = Book::orderBy('name')->get()->pluck('name', 'id');
+
+        return view('admin.books.edit', compact('genres', 'books', 'book'));
     }
 
     /**
@@ -68,7 +74,20 @@ class BookController extends Controller
      */
     public function update(Request $request, Book $book)
     {
-        //
+        $request->validate([
+            'name' => "required|unique:books,name,$book->id",
+            'genre_id' => 'exists:genres,id'
+        ]);
+
+        $book->update($request->all());
+        if ($request->image) {
+            $path = $request->image->store('test');
+            $book->image = 'storage/' . $path;
+            $book->save();
+        }
+        $book->books()->sync($request->books);
+
+        return to_route('books.index');
     }
 
     /**

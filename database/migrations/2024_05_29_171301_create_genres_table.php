@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('genres', function (Blueprint $table) {
             $table->id();
             $table->string('name', 32);
+            $table->string('slug', 128)->nullable();
             $table->text('description')->nullable();
             $table->timestamps();
         });

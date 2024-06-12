@@ -2,17 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Book;
+use App\Models\Genre;
 use Illuminate\Http\Request;
 
 class MainController extends Controller
 {
     function index()
     {
-        $title = 'Home page';
-        $subtitle = '<em>Subtitle</em>';
-        $users = ['Tom', 'Bob'];
+        $books = Book::latest()->limit(4)->get();
+        return view('client.index', compact('books'));
+    }
 
-        return view('client.index', compact('title', 'subtitle', 'users'));
+    function book(Book $book)
+    {
+        return view('client.book', compact('book'));
+    }
+
+    function genre(Genre $genre)
+    {
+        //dd($genre);
+        $books = Book::where('genre_id', '=', $genre->id)->latest()->get();
+        // dd($books);
+        return view('client.book', compact('book'));
     }
 
     function contacts()
