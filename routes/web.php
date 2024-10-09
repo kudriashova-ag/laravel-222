@@ -30,7 +30,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::resource('/books', BookController::class);
 });
 
-
 /* Route::get('/genres/{id}', function ($id) {
     $genre = Genre::findOrFail($id);
     dd($genre);
